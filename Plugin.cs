@@ -35,7 +35,7 @@ namespace TarkovShocker
             defaultShockerId = Config.Bind("TarkovShocker", "DefaultShockerId", "", "Default Shocker ID to trigger");
             durationMS = Config.Bind("TarkovShocker", "Duration MS", 500, "Duration in MS for shock or vibration");
             shockerEnabled = Config.Bind("TarkovShocker", "Shock or Vibration", true, "Enable for Shock, false for vibration");
-            debugMode = Config.Bind("TarkovShocker", "Debug Mode", true, "Enable or disable console logging");
+            debugMode = Config.Bind("TarkovShocker", "Debug Mode", false, "Enable or disable console logging");
 
             if (debugMode.Value)
             {
