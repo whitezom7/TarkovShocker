@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Nullable>enable</Nullable>
+		<RunPostBuildEvent>Always</RunPostBuildEvent>
+
+		<!-- Rename the output DLL -->
+		<AssemblyName>TarkovShocker</AssemblyName>
+	</PropertyGroup>
+
+	<!-- NuGet Packages -->
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="OpenShock.MinimalEvents" Version="0.0.1" />
+		<PackageReference Include="OpenShock.SDK.CSharp" Version="0.0.39" />
+		<PackageReference Include="OpenShock.SDK.CSharp.Hub" Version="0.0.39" />
+		<PackageReference Include="OpenShock.SDK.CSharp.Live" Version="0.0.39" />
+	</ItemGroup>
+
+	<!-- Local DLL References -->
+	<ItemGroup>
+		<!-- BepInEx Core -->
+		<Reference Include="BepInEx" Private="False">
+			<HintPath>..\..\BepInEx\core\BepInEx.dll</HintPath>
+		</Reference>
+		<Reference Include="0Harmony" Private="False">
+			<HintPath>..\..\BepInEx\core\0Harmony.dll</HintPath>
+		</Reference>
+
+		<!-- SPT Common/Reflection -->
+		<Reference Include="spt-common" Private="False">
+			<HintPath>..\..\BepInEx\plugins\spt\spt-common.dll</HintPath>
+		</Reference>
+		<Reference Include="spt-reflection" Private="False">
+			<HintPath>..\..\BepInEx\plugins\spt\spt-reflection.dll</HintPath>
+		</Reference>
+
+		<!-- EFT / Unity DLLs -->
+		<Reference Include="Assembly-CSharp" Private="False">
+			<HintPath>..\..\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine" Private="False">
+			<HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule" Private="False">
+			<HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.AssetBundleModule" Private="False">
+			<HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.InputLegacyModule" Private="False">
+			<HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.UnityWebRequestModule" Private="False">
+			<HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<!-- Post-build copy to BepInEx/plugins (relative path recommended) -->
+	<PropertyGroup>
+		<BepInExPluginDir>..\..\BepInEx\plugins\TarkovShocker</BepInExPluginDir>
+	</PropertyGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="xcopy /Y /I &quot;$(TargetPath)&quot; &quot;$(BepInExPluginDir)&quot;" />
+	</Target>
+
+</Project>
