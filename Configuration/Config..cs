@@ -10,19 +10,29 @@ namespace TarkovShocker.Configuration
         public ConfigEntry<string> apiHost = null!;
         public ConfigEntry<string> defaultShockerId = null!;
         public ConfigEntry<int> durationMS = null!;
-        public ConfigEntry<bool> shockerEnabled = null!;
+        public ConfigEntry<FeedbackType> shockerEnabled = null!;
         public ConfigEntry<bool> debugMode = null!;
+
+
+        public enum FeedbackType
+        {
+            Shock,
+            Vibrate
+        }
+
 
         public void Init(ConfigFile Config)
         {
             // Initialize configs
-            pluginEnabled = Config.Bind("TarkovShocker", "Plugin Enabled", true, "Enable or disable plugin");
-            apiKey = Config.Bind("TarkovShocker", "ApiKey", "", "Your OpenShock API Key");
-            apiHost = Config.Bind("TarkovShocker", "ApiHost", "https://api.openshock.app", "OpenShock API Host URL");
-            defaultShockerId = Config.Bind("TarkovShocker", "DefaultShockerId", "", "Default Shocker ID to trigger");
-            durationMS = Config.Bind("TarkovShocker", "Duration MS", 500, "Duration in MS for shock or vibration");
-            shockerEnabled = Config.Bind("TarkovShocker", "Shock or Vibration", true, "Enable for Shock, false for vibration");
-            debugMode = Config.Bind("TarkovShocker", "Debug Mode", false, "Enable or disable console logging");
+            pluginEnabled = Config.Bind("General", "Plugin Enabled", true, "Enable or disable plugin");
+            apiKey = Config.Bind("General", "ApiKey", "", "Your OpenShock API Key");
+            apiHost = Config.Bind("General", "ApiHost", "https://api.openshock.app", "OpenShock API Host URL");
+            defaultShockerId = Config.Bind("Shocker Config", "DefaultShockerId", "", "Default Shocker ID to trigger");
+            durationMS = Config.Bind("Shocker Config", "Duration MS", 500, new ConfigDescription("Duration in MS for Shock or vibration (300-6000)", new AcceptableValueRange<int>(300, 6000)));
+            shockerEnabled = Config.Bind<FeedbackType>("Shocker Config", "Feedback Type", FeedbackType.Shock, "Choose Shock or Vibration for feedback"); 
+            debugMode = Config.Bind("Debug", "Debug Mode", false, "Enable or disable console logging");
         }
     }
 }
+
+

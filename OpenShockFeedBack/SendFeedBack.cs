@@ -16,8 +16,7 @@ namespace TarkovShocker.OpenShockFeedBack
             if (string.IsNullOrEmpty(TarkovShockerPlugin.Instance.ConfigManager.apiKey.Value) || string.IsNullOrEmpty(TarkovShockerPlugin.Instance.ConfigManager.defaultShockerId.Value))
                 yield break;
 
-            string feedbackType = TarkovShockerPlugin.Instance.ConfigManager.shockerEnabled.Value ? "Shock" : "Vibrate";
-
+            string feedbackType = TarkovShockerPlugin.Instance.ConfigManager.shockerEnabled.Value == TarkovShocker.Configuration.TarkovConfig.FeedbackType.Shock ? "Shock" : "Vibrate";
             var payload = new
             {
                 shocks = new[]

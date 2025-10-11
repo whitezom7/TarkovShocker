@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TarkovShocker
 {
-    [BepInPlugin("nl.whitezom.tarkovshocker", "TarkovShocker", "1.0.0")]
+    [BepInPlugin("nl.whitezom.tarkovshocker", "TarkovShocker", "1.0.1")]
     public class TarkovShockerPlugin : BaseUnityPlugin
     {
         public static TarkovShockerPlugin Instance { get; private set; } = null!;

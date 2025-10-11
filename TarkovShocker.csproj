@@ -27,6 +27,9 @@
 		<Reference Include="0Harmony" Private="False">
 			<HintPath>..\..\BepInEx\core\0Harmony.dll</HintPath>
 		</Reference>
+		<Reference Include="ConfigurationManager">
+		  <HintPath>..\..\BepInEx\plugins\spt\ConfigurationManager.dll</HintPath>
+		</Reference>
 
 		<!-- SPT Common/Reflection -->
 		<Reference Include="spt-common" Private="False">
