@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Logging;
 using EFT;
 using HarmonyLib;
 using Newtonsoft.Json;
@@ -14,6 +15,7 @@ namespace TarkovShocker
     public class TarkovShockerPlugin : BaseUnityPlugin
     {
         public static TarkovShockerPlugin Instance { get; private set; } = null!;
+        public static ManualLogSource Log { get; private set; } = null!;
         public TarkovConfig ConfigManager { get; private set; } = null!;
 
 
@@ -21,6 +23,7 @@ namespace TarkovShocker
         private void Awake()
         {
             Instance = this;
+            Log = Logger; // expose logger statically
             ConfigManager = new TarkovConfig();
             ConfigManager.Init(Config);
 
@@ -46,21 +49,9 @@ namespace TarkovShocker
             }
         }
 
-        public static void HandleDamage(Player player, float damage)
-        {
-            if (Instance == null || !Instance.ConfigManager.pluginEnabled.Value) return;
+        
 
-            int intensity = Mathf.Clamp(Mathf.RoundToInt(damage), 5, 100);
-
-            if (Instance.ConfigManager.debugMode.Value)
-            {
-                Instance.Logger.LogInfo($"💥 Player took {damage} damage — triggering feedback at intensity {intensity}!");
-            }
-
-            Instance.StartCoroutine(Instance.SendFeedback(intensity, Instance.ConfigManager.durationMS.Value));
-        }
-
-        private IEnumerator SendFeedback(int intensity = 20, int durationMs = 500)
+        public IEnumerator SendFeedback(int intensity = 20, int durationMs = 500)
         {
             // Fix: Check for null before dereferencing ConfigManager
             if (Instance?.ConfigManager == null)

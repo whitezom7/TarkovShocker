@@ -10,7 +10,7 @@ namespace TarkovShocker.Patches
         public static void Postfix(Player __instance, DamageInfoStruct damageInfo)
         {
             if (__instance == null || !__instance.IsYourPlayer) return;
-            TarkovShockerPlugin.HandleDamage(__instance, damageInfo.Damage);
+            TarkovShocker.Handlers.DamageHandler.Handle(__instance, damageInfo.Damage);
         }
     }
 }
