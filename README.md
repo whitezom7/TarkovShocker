@@ -7,7 +7,8 @@
 ## Features
 
 - Sends feedback via OpenShock devices on player damage.
-- Configurable shock intensity and duration.
+- Configurable between shocking and vibration.
+- Intensity is dynamic and sets to the amount of damage you take.
 - Debug mode with console logging.
 - Test key (F7) to trigger feedback manually.
 
