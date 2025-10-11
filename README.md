@@ -14,6 +14,16 @@
 
 ---
 
+## Updates / Changelog
+
+### 1.0.1 - Small QoL Update
+- Added restrictions to duration in config (prevents breaking the plugin)
+- Added drop-down menu for feedback type (Shock / Vibrate)
+- Refactored codebase for future additions
+- Cleaned up the look of the in-game config menu
+
+---
+
 ## Installation for prebuilt release
 
 1. Ensure you have **BepInEx installed** in your SPT or EFT folder.
