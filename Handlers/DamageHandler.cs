@@ -12,18 +12,19 @@ namespace TarkovShocker.Handlers
                 return;
 
             int intensity = Mathf.Clamp(Mathf.RoundToInt(damage), 5, 100);
+            int duration = TarkovShockerPlugin.Instance.ConfigManager.durationMS.Value;
 
             if (TarkovShockerPlugin.Instance.ConfigManager.debugMode.Value)
             {
                 TarkovShockerPlugin.Log.LogInfo(
-                    $"💥 Player took {damage:F1} damage — triggering feedback at intensity {intensity}!"
+                    $"💥 Player took {damage:F1} damage — triggering feedback at intensity {intensity} for {duration} !"
                 );
             }
 
             TarkovShockerPlugin.Instance.StartCoroutine(
-                TarkovShockerPlugin.Instance.SendFeedback(
+                OpenShockFeedBack.SendFeedBack.SendFeedback(
                     intensity,
-                    TarkovShockerPlugin.Instance.ConfigManager.durationMS.Value
+                    duration
                 )
             );
         }

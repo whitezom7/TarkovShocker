@@ -1,13 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
-using EFT;
 using HarmonyLib;
-using Newtonsoft.Json;
-using System.Collections;
-using System.Text;
 using TarkovShocker.Configuration;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace TarkovShocker
 {
@@ -45,58 +40,13 @@ namespace TarkovShocker
             if (ConfigManager != null && ConfigManager.debugMode.Value && Input.GetKeyDown(KeyCode.F7))
             {
                 Logger.LogInfo("⚡ F7 pressed - sending test feedback!");
-                StartCoroutine(SendFeedback(25, 500));
+                StartCoroutine(OpenShockFeedBack.SendFeedBack.SendFeedback(25, 500));
             }
         }
 
         
 
-        public IEnumerator SendFeedback(int intensity = 20, int durationMs = 500)
-        {
-            // Fix: Check for null before dereferencing ConfigManager
-            if (Instance?.ConfigManager == null)
-                yield break;
-
-            if (string.IsNullOrEmpty(Instance.ConfigManager.apiKey.Value) || string.IsNullOrEmpty(Instance.ConfigManager.defaultShockerId.Value))
-                yield break;
-
-            string feedbackType = Instance.ConfigManager.shockerEnabled.Value ? "Shock" : "Vibrate";
-
-            var payload = new
-            {
-                shocks = new[]
-                {
-            new
-            {
-                id = Instance.ConfigManager.defaultShockerId.Value,
-                type = feedbackType,
-                intensity = intensity,
-                duration = durationMs,
-                exclusive = true
-            }
-        },
-                customName = "GameFeedback"
-            };
-
-            string json = JsonConvert.SerializeObject(payload);
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
-
-            using var request = new UnityWebRequest(Instance.ConfigManager.apiHost.Value + "/2/shockers/control", "POST");
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-            request.SetRequestHeader("OpenShockToken", Instance.ConfigManager.apiKey.Value);
-
-            yield return request.SendWebRequest();
-
-            if (Instance.ConfigManager.debugMode.Value)
-            {
-                if (request.result != UnityWebRequest.Result.Success)
-                    Logger.LogError($"❌ Feedback failed: {request.error} | {request.downloadHandler.text}");
-                else
-                    Logger.LogInfo($"✅ Sent {feedbackType} feedback successfully!");
-            }
-        }
+        
 
 
     }
