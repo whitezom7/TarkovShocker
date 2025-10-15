@@ -1,5 +1,6 @@
-﻿using System.Collections;
+﻿using EFT;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Text;
 using UnityEngine.Networking;
 
@@ -9,6 +10,11 @@ namespace TarkovShocker.OpenShockFeedBack
     {
         public static IEnumerator SendFeedback(int intensity = 20, int durationMs = 500)
         {
+
+            if (!TarkovShockerPlugin.Instance.ConfigManager.pluginEnabled.Value)
+                yield break;
+
+
             // Fix: Check for null before dereferencing ConfigManager
             if (TarkovShockerPlugin.Instance?.ConfigManager == null)
                 yield break;
@@ -43,8 +49,23 @@ namespace TarkovShocker.OpenShockFeedBack
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("OpenShockToken", TarkovShockerPlugin.Instance.ConfigManager.apiKey.Value);
 
-            yield return request.SendWebRequest();
+            // Start sending the request
+            var asyncOp = request.SendWebRequest();
 
+            // While the request is running, check if the plugin is enabled
+            while (!asyncOp.isDone)
+            {
+                if (!TarkovShockerPlugin.Instance.ConfigManager.pluginEnabled.Value)
+                {
+                    request.Abort(); // stop sending mid-way
+                    yield break;
+                }
+                yield return null;
+            }
+
+            // Final check before logging
+            if (!TarkovShockerPlugin.Instance.ConfigManager.pluginEnabled.Value)
+                yield break;
             if (TarkovShockerPlugin.Instance.ConfigManager.debugMode.Value)
             {
                 if (request.result != UnityWebRequest.Result.Success)
