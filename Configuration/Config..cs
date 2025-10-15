@@ -1,4 +1,5 @@
 ﻿using BepInEx.Configuration;
+using UnityEngine;
 
 namespace TarkovShocker.Configuration
 {
@@ -14,6 +15,9 @@ namespace TarkovShocker.Configuration
         public ConfigEntry<bool> debugMode = null!;
         public ConfigEntry<IntensityType> intensityType  = null!;
         public ConfigEntry<int> fixedIntensity = null!;
+
+        public ConfigEntry<KeyboardShortcut> debugKey { get; set; }
+        public ConfigEntry<KeyboardShortcut> killSwitch { get; set; }
 
 
 
@@ -34,6 +38,7 @@ namespace TarkovShocker.Configuration
         {
             // Initialize configs
             pluginEnabled = Config.Bind("General", "Plugin Enabled", true, "Enable or disable plugin");
+            killSwitch = Config.Bind("General", "Kill Switch Keybind", new KeyboardShortcut(KeyCode.F10), "Press to disable the plugin");
             apiKey = Config.Bind("General", "ApiKey", "", "Your OpenShock API Key");
             apiHost = Config.Bind("General", "ApiHost", "https://api.openshock.app", "OpenShock API Host URL");
             defaultShockerId = Config.Bind("Shocker Config", "DefaultShockerId", "", "Default Shocker ID to trigger");
@@ -42,6 +47,7 @@ namespace TarkovShocker.Configuration
             intensityType = Config.Bind<IntensityType>("Shocker Config", "Intensity Type", IntensityType.Dynamic, "Choose Dynamic or Fixed intensity for feedback");
             fixedIntensity = Config.Bind("Shocker Config", "Fixed Intensity", 50, new ConfigDescription("Fixed intensity value (1-100)", new AcceptableValueRange<int>(1, 100)));
             debugMode = Config.Bind("Debug", "Debug Mode", false, "Enable or disable console logging");
+            debugKey = Config.Bind("Debug", "Test shocker Keybind", new KeyboardShortcut(KeyCode.F7));
         }
     }
 }

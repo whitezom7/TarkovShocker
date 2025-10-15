@@ -2,6 +2,7 @@
 using BepInEx.Logging;
 using HarmonyLib;
 using TarkovShocker.Configuration;
+using TarkovShocker.Handlers;
 using UnityEngine;
 
 namespace TarkovShocker
@@ -37,10 +38,18 @@ namespace TarkovShocker
         private void Update()
         {
             // Fix: Check for null before dereferencing ConfigManager
-            if (ConfigManager != null && ConfigManager.debugMode.Value && Input.GetKeyDown(KeyCode.F7))
+            if (ConfigManager.pluginEnabled.Value && ConfigManager.debugMode.Value && Instance.ConfigManager.debugKey.Value.IsDown())
             {
-                Logger.LogInfo("⚡ F7 pressed - sending test feedback!");
-                StartCoroutine(OpenShockFeedBack.SendFeedBack.SendFeedback(25, 500));
+                Logger.LogInfo($"⚡{Instance.ConfigManager.debugKey.Value}  pressed - sending test feedback!");
+                int intensity = Instance.ConfigManager.fixedIntensity.Value;
+                int durationMS = Instance.ConfigManager.durationMS.Value;
+                StartCoroutine(OpenShockFeedBack.SendFeedBack.SendFeedback(intensity, durationMS));
+            }
+
+            if (ConfigManager.pluginEnabled.Value && ConfigManager.debugMode.Value && Instance.ConfigManager.killSwitch.Value.IsDown())
+            {
+                Logger.LogInfo($"⚡{Instance.ConfigManager.killSwitch.Value}  pressed -Disabling plugin!");
+                Instance.ConfigManager.pluginEnabled.Value = false;
             }
         }
 
