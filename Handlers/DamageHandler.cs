@@ -11,6 +11,13 @@ namespace TarkovShocker.Handlers
                 !TarkovShockerPlugin.Instance.ConfigManager.pluginEnabled.Value)
                 return;
 
+            if (TarkovShockerPlugin.Instance.ConfigManager.intensityType.Value ==
+                Configuration.TarkovConfig.IntensityType.Fixed)
+            {
+                int fixedIntensity = TarkovShockerPlugin.Instance.ConfigManager.fixedIntensity.Value;
+                damage = fixedIntensity;
+            }
+
             int intensity = Mathf.Clamp(Mathf.RoundToInt(damage), 5, 100);
             int duration = TarkovShockerPlugin.Instance.ConfigManager.durationMS.Value;
 

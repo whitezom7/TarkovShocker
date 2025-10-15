@@ -16,6 +16,12 @@
 
 ## Updates / Changelog
 
+
+### 1.0.2 - Small update
+
+- Added a fixed or dynamic intensity option (dynamic is based on damage taken, fixed is a set value)
+- Added intensity configuration to the config file and in-game menu
+
 ### 1.0.1 - Small QoL Update
 - Added restrictions to duration in config (prevents breaking the plugin)
 - Added drop-down menu for feedback type (Shock / Vibrate)
