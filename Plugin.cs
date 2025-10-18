@@ -39,26 +39,28 @@ namespace TarkovShocker
         private void Update()
         {
             // check if kill switch key is pressed
-            if (ConfigManager.pluginEnabled.Value && ConfigManager.debugMode.Value && Instance.ConfigManager.killSwitch.Value.IsDown())
+            if (ConfigManager.pluginEnabled.Value &&
+                ConfigManager.debugMode.Value &&
+                ConfigManager.killSwitch != null &&
+                ConfigManager.killSwitch.Value.IsDown())
             {
-                Logger.LogInfo($"⚡{Instance.ConfigManager.killSwitch.Value}  pressed -Disabling plugin!");
-                Instance.ConfigManager.pluginEnabled.Value = false;
+                Logger.LogInfo($"⚡{ConfigManager.killSwitch.Value}  pressed -Disabling plugin!");
+                ConfigManager.pluginEnabled.Value = false;
                 NotificationManagerClass.DisplayMessageNotification("TarkovShocker: KILLSWITCH ENABLED", ENotificationDurationType.Default, ENotificationIconType.Alert);
             }
 
-
             // Fix: Check for null before dereferencing ConfigManager
-            if (ConfigManager.pluginEnabled.Value && ConfigManager.debugMode.Value && Instance.ConfigManager.debugKey.Value.IsDown())
+            if (ConfigManager.pluginEnabled.Value &&
+                ConfigManager.debugMode.Value &&
+                ConfigManager.debugKey != null &&
+                ConfigManager.debugKey.Value.IsDown())
             {
-                Logger.LogInfo($"⚡{Instance.ConfigManager.debugKey.Value}  pressed - sending test feedback!");
-                int intensity = Instance.ConfigManager.fixedIntensity.Value;
-                int durationMS = Instance.ConfigManager.durationMS.Value;
+                Logger.LogInfo($"⚡{ConfigManager.debugKey.Value}  pressed - sending test feedback!");
+                int intensity = ConfigManager.fixedIntensity.Value;
+                int durationMS = ConfigManager.durationMS.Value;
                 StartCoroutine(OpenShockFeedBack.SendFeedBack.SendFeedback(intensity, durationMS));
                 NotificationManagerClass.DisplayMessageNotification($"TarkovShocker Debug: sent feedback at {intensity}% and {(durationMS / 1000)} seconds ", ENotificationDurationType.Default, ENotificationIconType.Alert);
-
             }
-
-
         }
 
         

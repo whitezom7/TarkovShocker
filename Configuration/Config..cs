@@ -16,8 +16,8 @@ namespace TarkovShocker.Configuration
         public ConfigEntry<IntensityType> intensityType  = null!;
         public ConfigEntry<int> fixedIntensity = null!;
 
-        public ConfigEntry<KeyboardShortcut> debugKey { get; set; }
-        public ConfigEntry<KeyboardShortcut> killSwitch { get; set; }
+        public ConfigEntry<KeyboardShortcut>? debugKey { get; set; }
+        public ConfigEntry<KeyboardShortcut>? killSwitch { get; set; }
 
 
 
