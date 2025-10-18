@@ -1,8 +1,9 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using EFT.Communications;
+using EFT.UI;
 using HarmonyLib;
 using TarkovShocker.Configuration;
-using TarkovShocker.Handlers;
 using UnityEngine;
 
 namespace TarkovShocker
@@ -37,6 +38,15 @@ namespace TarkovShocker
 
         private void Update()
         {
+            // check if kill switch key is pressed
+            if (ConfigManager.pluginEnabled.Value && ConfigManager.debugMode.Value && Instance.ConfigManager.killSwitch.Value.IsDown())
+            {
+                Logger.LogInfo($"⚡{Instance.ConfigManager.killSwitch.Value}  pressed -Disabling plugin!");
+                Instance.ConfigManager.pluginEnabled.Value = false;
+                NotificationManagerClass.DisplayMessageNotification("TarkovShocker: KILLSWITCH ENABLED", ENotificationDurationType.Default, ENotificationIconType.Alert);
+            }
+
+
             // Fix: Check for null before dereferencing ConfigManager
             if (ConfigManager.pluginEnabled.Value && ConfigManager.debugMode.Value && Instance.ConfigManager.debugKey.Value.IsDown())
             {
@@ -44,13 +54,11 @@ namespace TarkovShocker
                 int intensity = Instance.ConfigManager.fixedIntensity.Value;
                 int durationMS = Instance.ConfigManager.durationMS.Value;
                 StartCoroutine(OpenShockFeedBack.SendFeedBack.SendFeedback(intensity, durationMS));
+                NotificationManagerClass.DisplayMessageNotification($"TarkovShocker Debug: sent feedback at {intensity}% and {(durationMS / 1000)} seconds ", ENotificationDurationType.Default, ENotificationIconType.Alert);
+
             }
 
-            if (ConfigManager.pluginEnabled.Value && ConfigManager.debugMode.Value && Instance.ConfigManager.killSwitch.Value.IsDown())
-            {
-                Logger.LogInfo($"⚡{Instance.ConfigManager.killSwitch.Value}  pressed -Disabling plugin!");
-                Instance.ConfigManager.pluginEnabled.Value = false;
-            }
+
         }
 
         
